@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create Account — SMS</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="auth" data-page="signup">
+<div class="box">
+  <div class="brand">SMS Platform</div>
+  <h2>Create Account</h2>
+  <p class="sub">Register for Server Management System</p>
+  <input type="text"     id="name"     placeholder="Full name"        autocomplete="name">
+  <input type="email"    id="email"    placeholder="Email address"    autocomplete="username">
+  <input type="password" id="password" placeholder="Password (min 6)" autocomplete="new-password">
+  <input type="password" id="confirm"  placeholder="Confirm password" autocomplete="new-password">
+  <button id="signup-btn">Create Account</button>
+  <div id="msg"></div>
+  <p>Already have an account? <a href="/">Sign in</a></p>
+</div>
+<script type="module" src="/static/js/auth.js"></script>
+</body></html>

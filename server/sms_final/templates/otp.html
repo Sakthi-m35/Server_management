@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Verification — SMS</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="auth">
+<div class="box">
+  <div class="brand">SMS Platform</div>
+  <h2>Verification Required</h2>
+  <p class="sub">A one-time code was sent to <strong id="otp-email">your email</strong></p>
+  <div class="risk-box">High-risk login detected. Please verify your identity to continue.</div>
+  <input class="otp-input-box" type="text" id="otpInput" maxlength="6" placeholder="------" inputmode="numeric">
+  <div class="otp-timer">Code expires in <span id="timer">01:00</span></div>
+  <button class="btn-verify" id="verifyBtn">Verify Code</button>
+  <button class="btn-resend" id="resendBtn">Resend Code</button>
+  <div id="msg"></div>
+</div>
+<script type="module" src="/static/js/otp.js"></script>
+</body></html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Account — SMS</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="dash">
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-head"><div class="sb-tag">SMS</div><div class="sb-name">My <span>Account</span></div></div>
+    <div class="sb-user">
+      <div class="av av-us">U</div>
+      <div><div class="sb-un" id="sb-uname">User</div><div class="sb-ur r-us">User</div></div>
+    </div>
+    <nav class="sb-nav">
+      <div class="nav-sec">My Account</div>
+      <a class="nav-item active" data-s="profile"><span class="ni">PR</span>Profile</a>
+      <a class="nav-item" data-s="activity"><span class="ni">LG</span>Login Activity</a>
+      <a class="nav-item" data-s="security"><span class="ni">SC</span>Security Info</a>
+    </nav>
+    <div class="sb-foot"><button class="logout" id="logout-btn">Sign Out</button></div>
+  </aside>
+  <main class="main">
+
+    <div id="s-profile" class="sec active">
+      <div class="pg-hd"><div><h1>My Profile</h1><p>Your account information</p></div></div>
+      <div class="pc">
+        <div class="pav av-us" id="pav">U</div>
+        <div class="pi">
+          <h2 id="pname">—</h2><p id="pemail">—</p>
+          <div style="display:flex;gap:8px;margin-top:8px"><span id="prole"></span><span id="pstat"></span></div>
+        </div>
+      </div>
+      <div class="ig">
+        <div class="ii"><div class="il">Email</div><div class="iv" id="i-email">—</div></div>
+        <div class="ii"><div class="il">Name</div><div class="iv" id="i-name">—</div></div>
+        <div class="ii"><div class="il">Role</div><div class="iv" id="i-role">—</div></div>
+        <div class="ii"><div class="il">Status</div><div class="iv" id="i-stat">—</div></div>
+        <div class="ii"><div class="il">Member Since</div><div class="iv" id="i-since">—</div></div>
+      </div>
+      <button class="btn btn-o" id="edit-btn">Edit Name</button>
+      <div id="edit-form" style="display:none;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap">
+        <input type="text" id="new-name" placeholder="New name…"
+          style="background:var(--card);border:1px solid var(--bdr);border-radius:8px;padding:9px 12px;color:var(--dt);font-family:var(--font);font-size:13px;outline:none;min-width:190px">
+        <button class="btn btn-s" id="save-name">Save</button>
+      </div>
+    </div>
+
+    <div id="s-activity" class="sec">
+      <div class="pg-hd"><div><h1>Login Activity</h1><p>Your personal login history</p></div></div>
+      <div class="tw">
+        <table><thead><tr><th>Action</th><th>Risk</th><th>Status</th><th>Device</th><th>Timestamp</th></tr></thead>
+        <tbody id="act-tb"></tbody></table>
+      </div>
+    </div>
+
+    <div id="s-security" class="sec">
+      <div class="pg-hd"><div><h1>Security Info</h1><p>How your account is protected</p></div></div>
+      <div class="ig">
+        <div class="ii"><div class="il">Last Login Risk</div><div class="iv" id="sec-risk">—</div></div>
+        <div class="ii"><div class="il">Last Login Time</div><div class="iv" id="sec-time">—</div></div>
+        <div class="ii"><div class="il">Last Action</div><div class="iv" id="sec-action">—</div></div>
+        <div class="ii"><div class="il">Last Device</div><div class="iv" id="sec-device">—</div></div>
+        <div class="ii"><div class="il">Last Location</div><div class="iv" id="sec-loc">—</div></div>
+        <div class="ii"><div class="il">MFA Status</div><div class="iv" id="sec-mfa">—</div></div>
+      </div>
+      <div class="wbox">Only you can see your own data. Contact an administrator if you notice suspicious activity.</div>
+    </div>
+
+  </main>
+</div>
+<div id="toast"></div>
+<script type="module" src="/static/js/user.js"></script>
+</body></html>

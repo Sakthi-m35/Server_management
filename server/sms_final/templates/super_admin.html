@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Super Admin — SMS</title>
+<link rel="stylesheet" href="/static/css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dash">
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-head"><div class="sb-tag">SMS</div><div class="sb-name">Super <span>Admin</span></div></div>
+    <div class="sb-user">
+      <div class="av av-sa">S</div>
+      <div><div class="sb-un" id="sb-uname">Super Admin</div><div class="sb-ur r-sa">Super Administrator</div></div>
+    </div>
+    <nav class="sb-nav">
+      <div class="nav-sec">Dashboard</div>
+      <a class="nav-item active" data-s="overview"><span class="ni">OV</span>Overview</a>
+      <div class="nav-sec">Management</div>
+      <a class="nav-item" data-s="users"><span class="ni">US</span>User Management</a>
+      <div class="nav-sec">Monitoring</div>
+      <a class="nav-item" data-s="security"><span class="ni">SC</span>Security Alerts</a>
+      <a class="nav-item" data-s="analytics"><span class="ni">AN</span>Analytics</a>
+      <a class="nav-item" data-s="logs"><span class="ni">LG</span>Audit Logs</a>
+      <div class="nav-sec">System</div>
+      <a class="nav-item" data-s="controls"><span class="ni">CT</span>Controls</a>
+      <a class="nav-item" data-s="firewall"><span class="ni">FW</span>Firewall</a>
+    </nav>
+    <div class="sb-foot"><button class="logout" id="logout-btn">Sign Out</button></div>
+  </aside>
+  <main class="main">
+
+    <!-- OVERVIEW -->
+    <div id="s-overview" class="sec active">
+      <div class="pg-hd"><div><h1>Overview</h1><p>System-wide statistics</p></div></div>
+      <div class="sg">
+        <div class="sc" onclick="drillDown('total_users')"><span class="si">USR</span><div class="sl">Total Users</div><div class="sv" id="st-total_users">—</div></div>
+        <div class="sc" onclick="drillDown('active_users')"><span class="si">ACT</span><div class="sl">Active</div><div class="sv" id="st-active_users">—</div></div>
+        <div class="sc" onclick="drillDown('blocked_users')"><span class="si">BLK</span><div class="sl">Blocked</div><div class="sv" id="st-blocked_users">—</div></div>
+        <div class="sc" onclick="drillDown('admins')"><span class="si">ADM</span><div class="sl">Admins</div><div class="sv" id="st-admin_count">—</div></div>
+        <div class="sc" onclick="drillDown('users')"><span class="si">USR</span><div class="sl">Users</div><div class="sv" id="st-user_count">—</div></div>
+        <div class="sc" onclick="drillDown('success_logins')"><span class="si">OK</span><div class="sl">Successful Logins</div><div class="sv" id="st-success_logins">—</div></div>
+        <div class="sc" onclick="drillDown('failed_logins')"><span class="si">FAIL</span><div class="sl">Failed Logins</div><div class="sv" id="st-failed_logins">—</div></div>
+        <div class="sc" onclick="drillDown('high_risk')"><span class="si">RSK</span><div class="sl">High Risk</div><div class="sv" id="st-high_risk">—</div></div>
+        <div class="sc" onclick="drillDown('events')"><span class="si">EVT</span><div class="sl">Total Events</div><div class="sv" id="st-total_events">—</div></div>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div id="s-users" class="sec">
+      <div class="pg-hd">
+        <div><h1>User Management</h1><p>Manage roles, status and accounts</p></div>
+        <span id="user-count-label" style="font-size:12px;color:var(--mut)"></span>
+      </div>
+      <div class="fb">
+        <input type="text" id="user-search" placeholder="Search email or name...">
+        <select id="role-filter">
+          <option value="">All Roles</option>
+          <option value="super_admin">Super Admin</option>
+          <option value="admin">Admin</option>
+          <option value="user">User</option>
+        </select>
+        <select id="status-filter">
+          <option value="">All Status</option>
+          <option value="active">Active</option>
+          <option value="blocked">Blocked</option>
+        </select>
+      </div>
+      <div class="tw">
+        <div class="th"><h3>All Users</h3></div>
+        <table><thead><tr><th>ID</th><th>Email</th><th>Name</th><th>Role</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead>
+        <tbody id="users-tb"></tbody></table>
+      </div>
+    </div>
+
+    <!-- SECURITY -->
+    <div id="s-security" class="sec">
+      <div class="pg-hd">
+        <div><h1>Security Alerts</h1><p>High-risk login events</p></div>
+        <span id="alert-count" style="background:rgba(239,83,80,.15);color:#ef9a9a;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700"></span>
+      </div>
+      <div class="tw">
+        <div class="th"><h3>High Risk Events</h3></div>
+        <table><thead><tr><th>Email</th><th>Action</th><th>Device</th><th>Location</th><th>Timestamp</th></tr></thead>
+        <tbody id="sec-tb"></tbody></table>
+      </div>
+    </div>
+
+    <!-- ANALYTICS -->
+    <div id="s-analytics" class="sec">
+      <div class="pg-hd"><div><h1>Analytics</h1><p>Comprehensive system insights</p></div></div>
+      <div class="atabs">
+        <div class="atab active" data-at="login">Login Activity</div>
+        <div class="atab" data-at="user">User Distribution</div>
+        <div class="atab" data-at="risk">Risk Analysis</div>
+        <div class="atab" data-at="device">Devices &amp; Locations</div>
+        <div class="atab" data-at="time">Hourly Patterns</div>
+      </div>
+      <div id="at-login" class="asec active">
+        <div class="cg">
+          <div class="cc"><h3>7-Day Login Trend</h3><canvas id="chart-trend7"></canvas></div>
+          <div class="cc"><h3>Login Status Breakdown</h3><canvas id="chart-status"></canvas></div>
+        </div>
+        <div class="cc"><h3>30-Day Activity</h3><canvas id="chart-trend30"></canvas></div>
+      </div>
+      <div id="at-user" class="asec">
+        <div class="cg">
+          <div class="cc"><h3>Role Distribution</h3><canvas id="chart-roles"></canvas></div>
+          <div class="cc"><h3>User Status</h3><canvas id="chart-ustatus"></canvas></div>
+        </div>
+        <div class="tw"><div class="th"><h3>Top Locations</h3></div><div style="padding:16px" id="loc-bars"></div></div>
+      </div>
+      <div id="at-risk" class="asec">
+        <div class="cg">
+          <div class="cc"><h3>Risk Distribution</h3><canvas id="chart-risk"></canvas></div>
+          <div class="cc"><h3>Action Breakdown</h3><canvas id="chart-actions"></canvas></div>
+        </div>
+        <div class="cc"><h3>High Risk Trend</h3><canvas id="chart-highrisk"></canvas></div>
+      </div>
+      <div id="at-device" class="asec">
+        <div class="cg">
+          <div class="cc"><h3>Device Types</h3><canvas id="chart-devices"></canvas></div>
+          <div class="tw"><div class="th"><h3>Login Locations</h3></div><div style="padding:16px" id="device-loc-bars"></div></div>
+        </div>
+      </div>
+      <div id="at-time" class="asec">
+        <div class="cc"><h3>Hourly Login Distribution</h3><canvas id="chart-hourly"></canvas></div>
+      </div>
+    </div>
+
+    <!-- LOGS -->
+    <div id="s-logs" class="sec">
+      <div class="pg-hd">
+        <div><h1>Audit Logs</h1><p>All system events</p></div>
+        <span id="log-count-label" style="font-size:12px;color:var(--mut)"></span>
+      </div>
+      <div class="fb">
+        <input type="text" id="log-search" placeholder="Search email or action...">
+        <select id="log-risk-filter">
+          <option value="">All Risk</option>
+          <option value="high">High Risk</option>
+          <option value="low">Low Risk</option>
+        </select>
+        <select id="log-status-filter">
+          <option value="">All Status</option>
+          <option value="success">Success</option>
+          <option value="failed">Failed</option>
+          <option value="pending">Pending</option>
+        </select>
+      </div>
+      <div class="tw">
+        <table><thead><tr><th>ID</th><th>Email</th><th>Action</th><th>Risk</th><th>Status</th><th>Device</th><th>Location</th><th>Timestamp</th></tr></thead>
+        <tbody id="logs-tb"></tbody></table>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div id="s-controls" class="sec">
+      <div class="pg-hd"><div><h1>System Controls</h1><p>Platform configuration and diagnostics</p></div></div>
+      <div class="ctrl-grid">
+        <div class="ctrl-card">
+          <h4>Database</h4>
+          <p>Current record counts across all tables.</p>
+          <div id="ctrl-db-stats" style="font-family:var(--mono);font-size:13px;color:var(--acc2)">Loading...</div>
+        </div>
+        <div class="ctrl-card">
+          <h4>Super Administrator</h4>
+          <p>Primary system account. Cannot be modified.</p>
+          <div id="ctrl-sa-email" style="font-size:13px;color:var(--dt);font-weight:600">Loading...</div>
+        </div>
+        <div class="ctrl-card">
+          <h4>Risk Engine</h4>
+          <p>ML model or heuristic fallback for login risk assessment.</p>
+          <div id="model-status"><span class="ctrl-badge cb-warn">Checking...</span></div>
+        </div>
+        <div class="ctrl-card">
+          <h4>MFA System</h4>
+          <p>Email OTP issued on high-risk logins. Valid 60 seconds.</p>
+          <span class="ctrl-badge cb-ok">Operational</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIREWALL -->
+    <div id="s-firewall" class="sec">
+      <div class="pg-hd"><div><h1>Firewall</h1><p>Application-level threat protection and IP management</p></div></div>
+
+      <!-- OS Firewall Status Card -->
+      <div id="fw-os-card" style="background:rgba(15,35,71,0.85);border:1.5px solid rgba(26,115,232,0.4);border-radius:12px;padding:18px 22px;margin-bottom:16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mut);margin-bottom:5px">OS Firewall Engine</div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <span id="fw-os-name" style="font-family:var(--mono);font-size:14px;font-weight:700;color:var(--acc2)">Detecting...</span>
+            <span id="fw-os-enabled-badge"></span>
+            <span id="fw-priv-badge"></span>
+          </div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-o" id="fw-sync-btn">Sync Rules to OS</button>
+          <button class="btn btn-o" id="fw-guide-btn">Setup Guide</button>
+        </div>
+      </div>
+
+      <!-- Your IP Banner -->
+      <div style="background:rgba(26,115,232,0.10);border:1px solid rgba(26,115,232,0.3);border-radius:10px;padding:12px 18px;margin-bottom:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mut)">Your Current IP</div>
+        <div style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--acc2)" id="fw-myip">Detecting...</div>
+        <div style="font-size:12px;color:var(--mut);margin-left:auto">The IP address your browser is currently using.</div>
+      </div>
+
+      <!-- Stats -->
+      <div class="fw-stat-grid">
+        <div class="fw-stat"><div class="fwl">Blacklisted IPs</div><div class="fwv" id="fw-blacklisted">—</div></div>
+        <div class="fw-stat"><div class="fwl">Whitelisted IPs</div><div class="fwv" id="fw-whitelisted">—</div></div>
+        <div class="fw-stat"><div class="fwl">Total Blocked Reqs</div><div class="fwv" id="fw-total_blocked">—</div></div>
+        <div class="fw-stat"><div class="fwl">Threats (24h)</div><div class="fwv" id="fw-threats_24h">—</div></div>
+        <div class="fw-stat"><div class="fwl">Rate Limit Events</div><div class="fwv" id="fw-rate_events">—</div></div>
+        <div class="fw-stat"><div class="fwl">Unique Visitors</div><div class="fwv" id="fw-unique_visitors">—</div></div>
+        <div class="fw-stat"><div class="fwl">Total Requests</div><div class="fwv" id="fw-total_requests">—</div></div>
+        <div class="fw-stat"><div class="fwl">OS Rules Applied</div><div class="fwv" id="fw-os_applied">—</div></div>
+      </div>
+
+      <!-- Add Rule -->
+      <div class="fw-add-form">
+        <h4>Add IP Rule</h4>
+        <div class="fw-row">
+          <input type="text" id="fw-ip-input" placeholder="IP address (e.g. 203.0.113.45)">
+          <select id="fw-type-select">
+            <option value="blacklist">Blacklist (Block)</option>
+            <option value="whitelist">Whitelist (Trust)</option>
+          </select>
+          <input type="text" id="fw-reason-input" placeholder="Reason (optional)" style="flex:2">
+          <button class="btn btn-d" id="fw-add-btn">Add Rule</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="fw-tabs">
+        <div class="fw-tab active" data-fw="rules">IP Rules</div>
+        <div class="fw-tab" data-fw="visitors">Visitor IPs</div>
+        <div class="fw-tab" data-fw="os-rules">OS Rules</div>
+        <div class="fw-tab" data-fw="logs">Firewall Logs</div>
+      </div>
+
+      <!-- Rules Pane -->
+      <div class="fw-pane active" id="fwp-rules">
+        <div class="tw">
+          <div class="th">
+            <h3>Active Rules</h3>
+            <button class="btn btn-w" id="fw-clear-expired">Clear Expired</button>
+          </div>
+          <table><thead><tr><th>IP Address</th><th>Type</th><th>Reason</th><th>Source</th><th>Expires</th><th>Created</th><th>Action</th></tr></thead>
+          <tbody id="fw-rules-tb"></tbody></table>
+        </div>
+      </div>
+
+      <!-- Visitors Pane -->
+      <div class="fw-pane" id="fwp-visitors">
+        <div class="tw">
+          <div class="th">
+            <h3>Visitor IP Addresses</h3>
+            <span style="font-size:12px;color:var(--mut)">All IPs that have accessed this server</span>
+          </div>
+          <table><thead><tr><th>IP Address</th><th>Status</th><th>Last Email Used</th><th>Last Endpoint</th><th>Request Count</th><th>First Seen</th><th>Last Seen</th><th>Action</th></tr></thead>
+          <tbody id="fw-visitors-tb"></tbody></table>
+        </div>
+      </div>
+
+      <!-- OS Rules Pane -->
+      <div class="fw-pane" id="fwp-os-rules">
+        <div class="tw">
+          <div class="th">
+            <h3>Active OS Firewall Rules</h3>
+            <span style="font-size:12px;color:var(--mut)" id="os-rules-subtitle">Rules applied directly to Windows/Linux firewall</span>
+          </div>
+          <table><thead><tr><th>Rule Name / Source IP</th><th>Action</th><th>Direction</th><th>Enabled</th></tr></thead>
+          <tbody id="fw-os-rules-tb"></tbody></table>
+        </div>
+      </div>
+
+      <!-- Logs Pane -->
+      <div class="fw-pane" id="fwp-logs">
+        <div class="tw">
+          <div class="th"><h3>Firewall Event Logs</h3><span style="font-size:12px;color:var(--mut)">Last 200 events</span></div>
+          <table><thead><tr><th>IP Address</th><th>Action</th><th>Reason</th><th>Endpoint</th><th>Timestamp</th></tr></thead>
+          <tbody id="fw-logs-tb"></tbody></table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Setup Guide Modal -->
+<div class="modal-overlay" id="fw-guide-modal">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-hd">
+      <h3 id="fw-guide-title">OS Firewall Setup Guide</h3>
+      <button class="modal-close" onclick="document.getElementById('fw-guide-modal').classList.remove('open')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div id="fw-guide-content" style="color:var(--dt);font-size:13px;line-height:1.8"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Drill-down modal -->
+<div class="modal-overlay" id="drill-modal">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3 id="modal-title">Detail</h3>
+      <button class="modal-close" onclick="document.getElementById('drill-modal').classList.remove('open')">&times;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<script type="module" src="/static/js/super_admin.js"></script>
+</body></html>

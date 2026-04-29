@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Dashboard — SMS</title>
+<link rel="stylesheet" href="/static/css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dash">
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-head"><div class="sb-tag">SMS</div><div class="sb-name">Admin <span>Panel</span></div></div>
+    <div class="sb-user">
+      <div class="av av-ad">A</div>
+      <div><div class="sb-un" id="sb-uname">Admin</div><div class="sb-ur r-ad">Administrator</div></div>
+    </div>
+    <nav class="sb-nav">
+      <div class="nav-sec">Dashboard</div>
+      <a class="nav-item active" data-s="overview"><span class="ni">OV</span>Overview</a>
+      <div class="nav-sec">Management</div>
+      <a class="nav-item" data-s="users"><span class="ni">US</span>User Management</a>
+      <div class="nav-sec">Monitoring</div>
+      <a class="nav-item" data-s="analytics"><span class="ni">AN</span>Analytics</a>
+      <a class="nav-item" data-s="logs"><span class="ni">LG</span>Audit Logs</a>
+    </nav>
+    <div class="sb-foot"><button class="logout" id="logout-btn">Sign Out</button></div>
+  </aside>
+  <main class="main">
+
+    <div id="s-overview" class="sec active">
+      <div class="pg-hd"><div><h1>Overview</h1><p>System statistics</p></div></div>
+      <div class="sg">
+        <div class="sc"><span class="si">USR</span><div class="sl">Total Users</div><div class="sv" id="st-total_users">—</div></div>
+        <div class="sc"><span class="si">ACT</span><div class="sl">Active</div><div class="sv" id="st-active_users">—</div></div>
+        <div class="sc"><span class="si">BLK</span><div class="sl">Blocked</div><div class="sv" id="st-blocked_users">—</div></div>
+        <div class="sc"><span class="si">OK</span><div class="sl">Successful Logins</div><div class="sv" id="st-success_logins">—</div></div>
+        <div class="sc"><span class="si">FAIL</span><div class="sl">Failed Logins</div><div class="sv" id="st-failed_logins">—</div></div>
+        <div class="sc"><span class="si">RSK</span><div class="sl">High Risk Events</div><div class="sv" id="st-high_risk">—</div></div>
+      </div>
+    </div>
+
+    <div id="s-users" class="sec">
+      <div class="pg-hd"><div><h1>User Management</h1><p>Block or unblock users</p></div></div>
+      <div class="fb"><input type="text" id="user-search" placeholder="Search email or name..."></div>
+      <div class="tw">
+        <div class="th"><h3>Users</h3></div>
+        <table><thead><tr><th>Email</th><th>Name</th><th>Role</th><th>Status &amp; Action</th></tr></thead>
+        <tbody id="users-tb"></tbody></table>
+      </div>
+    </div>
+
+    <div id="s-analytics" class="sec">
+      <div class="pg-hd"><div><h1>Analytics</h1><p>Login trends and risk distribution</p></div></div>
+      <div class="cg">
+        <div class="cc"><h3>Login Trend — Last 7 Days</h3><canvas id="chart-trend"></canvas></div>
+        <div class="cc"><h3>Risk Distribution</h3><canvas id="chart-risk"></canvas></div>
+      </div>
+    </div>
+
+    <div id="s-logs" class="sec">
+      <div class="pg-hd"><div><h1>Audit Logs</h1><p>All system events</p></div></div>
+      <div class="tw">
+        <table><thead><tr><th>Email</th><th>Action</th><th>Risk</th><th>Status</th><th>Timestamp</th></tr></thead>
+        <tbody id="logs-tb"></tbody></table>
+      </div>
+    </div>
+
+  </main>
+</div>
+<div id="toast"></div>
+<script type="module" src="/static/js/admin.js"></script>
+</body></html>
